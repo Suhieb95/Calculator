@@ -7,7 +7,8 @@ let canAddOperation = true;
 buttons.forEach((btn) => {
   btn.addEventListener("click", () => {
     const btnText = btn.innerText;
-    let isValidResultValue = result.value !== "" && result.value !== "0";
+    let isValidResultValue =
+      result.value !== "" && result.value !== "0" && isOp(result.value);
 
     const isValidNo =
       btnText !== "AC" && btnText !== "=" && btnText !== "Del" && !isError;
@@ -88,14 +89,20 @@ function formatNumber(no) {
     let formattedNumber = "";
     const str = no.toString().split(".");
     const strNo = str[0];
+    let count = 0;
 
-    for (let i = strNo.length - 1, c = 0; i >= 0; i--, c++) {
+    for (let i = strNo.length - 1; i >= 0; i--) {
+      count++;
       formattedNumber = strNo[i] + formattedNumber;
-      if (c % 3 === 2 && i != 0) {
+      if (count % 3 === 0 && i != 0) {
         formattedNumber = "," + formattedNumber;
       }
     }
-    return formattedNumber + "." + str[1];
+    if (str[1] !== undefined) {
+      return formattedNumber + "." + str[1];
+    }
+
+    return formattedNumber;
   }
 }
 
