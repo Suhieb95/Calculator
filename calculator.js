@@ -86,7 +86,8 @@ function setError() {
 function formatNumber(no) {
   if (no != 0) {
     let formattedNumber = "";
-    const strNo = no.toString();
+    const str = no.toString().split(".");
+    const strNo = str[0];
 
     for (let i = strNo.length - 1, c = 0; i >= 0; i--, c++) {
       formattedNumber = strNo[i] + formattedNumber;
@@ -94,8 +95,7 @@ function formatNumber(no) {
         formattedNumber = "," + formattedNumber;
       }
     }
-    console.log(formattedNumber);
-    return formattedNumber;
+    return formattedNumber + "." + str[1];
   }
 }
 
