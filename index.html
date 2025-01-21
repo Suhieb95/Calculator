@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator</title>
+
+    <link rel="prefetch" href="favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+    <link rel="preload" href="styles.css" as="style" />
+    <link rel="stylesheet" href="styles.css" />
+
+    <link rel="preload" href="calculator.js" as="script" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="element-center">
+        <div class="calculator">
+          <textarea readonly id="result" type="text"></textarea>
+          <div class="calculator-body">
+            <div class="numbers">
+              <button>1</button>
+              <button>2</button>
+              <button>3</button>
+              <button class="clear-btn">AC</button>
+            </div>
+            <div class="numbers">
+              <button>4</button>
+              <button>5</button>
+              <button>6</button>
+              <button class="op-btn">+</button>
+            </div>
+            <div class="numbers">
+              <button>7</button>
+              <button>8</button>
+              <button>9</button>
+              <button class="op-btn">-</button>
+            </div>
+            <div class="numbers">
+              <button>0</button>
+              <button>.</button>
+              <button>Del</button>
+              <button class="op-btn">*</button>
+            </div>
+            <div class="numbers">
+              <button class="eq-btn span-3">=</button>
+              <button class="op-btn span-1">/</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="calculator.js" defer></script>
+  </body>
+</html>

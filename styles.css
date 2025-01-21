@@ -1,0 +1,140 @@
+*,
+*::after,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    max-width: 1920px;
+    margin-inline: auto;
+    min-height: 100svh;
+    width: 100%;
+    padding: 15px;
+    background-color: #f1f1f1;
+}
+
+#result {
+    width: 100%;
+    display: block;
+    padding-top: 10px;
+}
+
+.calculator {
+    width: 300px;
+    border-radius: 4px;
+    margin-top: 100px;
+
+    textarea {
+        height: 100px;
+        border-radius: 4px;
+        resize: none;
+        cursor: default;
+        outline: none;
+        font-weight: 700;
+        padding: 0 10px;
+        text-align: left;
+        width: 100% !important;
+        font-size: 25px;
+        border: solid 1px white;
+        background-color: rgb(0, 0, 0, 0.8);
+        color: white;
+        word-wrap: break-word;
+        text-wrap: wrap;
+    }
+
+    box-shadow: rgba(99, 99, 99, 0.6) 0px 2px 8px 0px;
+
+    .op-btn {
+        background-color: orange;
+
+        &:active {
+            background-color: darkorange
+        }
+    }
+
+    .eq-btn {
+        background-color: #FF7074;
+
+        &:active {
+            background-color: red
+        }
+    }
+
+    .clear-btn {
+        background-color: grey;
+        color: white;
+        transition: 0.1s transform;
+
+        &:active {
+            transform: scale(1.1);
+        }
+    }
+}
+
+.calculator-body {
+    display: flex;
+    flex-direction: column;
+
+    .numbers {
+        display: flex;
+        flex-direction: row;
+
+        .span-2 {
+            flex: 2;
+        }
+
+        .span-1 {
+            flex: 1;
+        }
+
+        .span-3 {
+            flex: 3;
+        }
+    }
+
+    button {
+        width: 100%;
+        border-radius: 5px;
+        padding: 20px 0;
+        margin: 1px;
+        font-weight: 700;
+        font-size: 16px;
+        background-color: #f3f3f3;
+        cursor: pointer;
+        box-shadow: rgba(99,
+                99,
+                99,
+                0.2) 0px 2px 8px 0px;
+        border: solid 1px #f3f3f3;
+        transition: 0.5s all;
+
+        &:active {
+            background-color: gray
+        }
+    }
+}
+
+.element-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.between {
+    justify-content: space-between;
+}
+
+.flex-row {
+    flex-direction: row;
+}
+
+.flex {
+    display: flex;
+}
