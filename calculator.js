@@ -66,7 +66,7 @@ function removeLastChar(word) {
 function displayResult(isValidResultValue) {
   try {
     if (isValidResultValue) {
-      const evalValue = eval(result.value.replace(",", ""));
+      const evalValue = eval(removeFormatting(result.value));
       if (!isNaN(evalValue)) {
         result.value = formatNumber(evalValue);
         isError = false;
@@ -79,6 +79,20 @@ function displayResult(isValidResultValue) {
     setError();
   }
 }
+
+function removeFormatting(value) {
+  let result = "";
+  let i = 0;
+  while (i < value.length) {
+    const char = value[i];
+    if (char !== ",") {
+      result += char;
+    }
+    i++;
+  }
+  return result;
+}
+
 function setError() {
   result.value = "Error";
   isError = true;
