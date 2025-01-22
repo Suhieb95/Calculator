@@ -19,8 +19,8 @@ buttons.forEach((btn) => {
     if (isValidNo) {
       if (isOp(btnText)) {
         if (canAddOperation) {
-          canAddOperation = false;
           result.value += btnText;
+          canAddOperation = false;
         }
       } else {
         result.value += btnText;
@@ -29,7 +29,7 @@ buttons.forEach((btn) => {
     } else if (isClearBtn) {
       clearResult();
     } else if (isDelBtn && !isError) {
-      if (isValidResultValue) {
+      if (result.value !== "" && result.value !== "0") {
         result.value = removeLastChar(result.value);
       }
     } else if (isEqBtn) {
@@ -122,9 +122,9 @@ function formatNumber(no) {
 
 function isOp(value) {
   return (
-    value.includes("+") ||
-    value.includes("-") ||
-    value.includes("*") ||
-    value.includes("/")
+    value?.includes("+") ||
+    value?.includes("-") ||
+    value?.includes("*") ||
+    value?.includes("/")
   );
 }
