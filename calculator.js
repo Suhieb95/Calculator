@@ -3,6 +3,8 @@ const result = document.getElementById("result");
 
 let isError = false;
 let canAddOperation = true;
+let lastResult = 0;
+let lastOpertation = "";
 
 buttons.forEach((btn) => {
   btn.addEventListener("click", () => {
@@ -66,26 +68,46 @@ function removeLastChar(word) {
 function displayResult(isValidResultValue) {
   try {
     if (isValidResultValue) {
+      getLastOperation(result.value);
       const evalValue = eval(removeFormatting(result.value));
-      if (!isNaN(evalValue)) {
-        result.value = formatNumber(evalValue);
-        isError = false;
-        canAddOperation = true;
-      } else {
-        setError();
-      }
+      displayCalculation(evalValue);
+    } else if (!isNaN(removeFormatting(result.value))) {
+      const evalValue = eval(removeFormatting(result.value + lastOpertation));
+      displayCalculation(evalValue);
     }
   } catch (error) {
     setError();
   }
 }
-
+function displayCalculation(evalValue) {
+  if (!isNaN(evalValue)) {
+    result.value = formatNumber(evalValue);
+    isError = false;
+    canAddOperation = true;
+  } else {
+    setError();
+  }
+}
+function getLastOperation(value) {
+  lastOpertation = "";
+  for (let i = value.length - 1; i >= 0; i--) {
+    if (isOp(value[i])) {
+      lastOpertation = value[i] + lastOpertation;
+      break;
+    }
+    lastOpertation = value[i] + lastOpertation;
+  }
+}
 function removeFormatting(value) {
   let result = "";
   let i = 0;
   while (i < value.length) {
     const char = value[i];
-    if (char !== ",") {
+    if (char === "×") {
+      result += "*";
+    } else if (char === "÷") {
+      result += "/";
+    } else if (char !== ",") {
       result += char;
     }
     i++;
@@ -124,7 +146,7 @@ function isOp(value) {
   return (
     value?.includes("+") ||
     value?.includes("-") ||
-    value?.includes("*") ||
-    value?.includes("/")
+    value?.includes("×") ||
+    value?.includes("÷")
   );
 }
