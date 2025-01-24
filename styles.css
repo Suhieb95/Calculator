@@ -46,7 +46,10 @@
         scrollbar-color: orange transparent;
 
         hr {
-            margin-bottom: 15px;
+            margin: 10px 0 20px 0;
+            background-color: orange;
+            height: 2px;
+            border: none;
         }
 
         div {
@@ -63,11 +66,25 @@
             cursor: pointer;
             border: none;
             font-size: 25px;
-            margin-bottom: 5px;
-            transition: transform 0.3s;
+            transition: all 0.3s !important;
 
-            &:last-child:hover {
-                transform: rotate(360deg);
+            &:not(.clear-btn) {
+                &:hover {
+                    transform: rotate(360deg);
+                }
+
+                margin-left: auto;
+            }
+        }
+
+        .clear-btn {
+            &:hover {
+                transform: scale(1.2);
+            }
+
+            >img {
+                width: 20px;
+                height: 20px
             }
         }
 

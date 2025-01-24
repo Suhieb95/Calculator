@@ -17,21 +17,16 @@ function addHistory() {
     const historyList = document.createElement("div");
     historyList.classList.add("history-list");
     const btn = document.createElement("button");
-    const clearBtn = document.createElement("button");
     const btnContainer = document.createElement("div");
 
-    clearBtn.innerText = "🗑️";
+    renderClearButton(btnContainer, historyList);
+
     btn.innerText = "✖";
 
     btn.addEventListener("click", () => {
       historyList.remove();
     });
-    clearBtn.addEventListener("click", () => {
-      history = [];
-      historyList.remove();
-    });
 
-    btnContainer.appendChild(clearBtn);
     btnContainer.appendChild(btn);
     historyList.appendChild(btnContainer);
     historyList.appendChild(document.createElement("hr"));
@@ -43,6 +38,22 @@ function addHistory() {
       historyList.appendChild(li);
     });
   });
+}
+
+function renderClearButton(btnContainer, historyList) {
+  if (history.length > 0) {
+    const clearBtn = document.createElement("button");
+    const img = document.createElement("img");
+    img.src = "./trash-solid.svg";
+    img.title ="Clear";
+    clearBtn.appendChild(img);
+    clearBtn.classList.add("clear-btn");
+    btnContainer.appendChild(clearBtn);
+    clearBtn.addEventListener("click", () => {
+      history = [];
+      historyList.remove();
+    });
+  }
 }
 
 function addButtonsEventListeners() {
