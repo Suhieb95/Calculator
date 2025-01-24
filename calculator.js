@@ -6,6 +6,19 @@ let canAddOperation = true;
 let lastResult = 0;
 let lastOpertation = "";
 
+document.addEventListener("DOMContentLoaded", () => {
+  let viewportMeta = document.querySelector("meta[name=viewport]");
+
+  if (!viewportMeta) {
+    viewportMeta = document.createElement("meta");
+    viewportMeta.name = "viewport";
+    document.head.appendChild(viewportMeta);
+  }
+
+  viewportMeta.content =
+    "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no";
+});
+
 buttons.forEach((btn) => {
   btn.addEventListener("click", () => {
     const btnText = btn.innerText;
