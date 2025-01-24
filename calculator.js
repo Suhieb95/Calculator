@@ -9,68 +9,75 @@ let lastResult = 0;
 let lastOpertation = "";
 let history = [];
 
-historyBtn.addEventListener("click", () => {
-  const historyList = document.createElement("div");
-  historyList.classList.add("history-list");
-  const btn = document.createElement("button");
-  const clearBtn = document.createElement("button");
-  const btnContainer = document.createElement("div");
+addButtonsEventListeners();
+addHistory();
 
-  clearBtn.innerText = "🗑️";
-  btn.innerText = "✖";
+function addHistory() {
+  historyBtn.addEventListener("click", () => {
+    const historyList = document.createElement("div");
+    historyList.classList.add("history-list");
+    const btn = document.createElement("button");
+    const clearBtn = document.createElement("button");
+    const btnContainer = document.createElement("div");
 
-  btn.addEventListener("click", () => {
-    historyList.remove();
+    clearBtn.innerText = "🗑️";
+    btn.innerText = "✖";
+
+    btn.addEventListener("click", () => {
+      historyList.remove();
+    });
+    clearBtn.addEventListener("click", () => {
+      history = [];
+      historyList.remove();
+    });
+
+    btnContainer.appendChild(clearBtn);
+    btnContainer.appendChild(btn);
+    historyList.appendChild(btnContainer);
+    historyList.appendChild(document.createElement("hr"));
+    calc.appendChild(historyList);
+
+    history.forEach((value) => {
+      const li = document.createElement("li");
+      li.innerText = value;
+      historyList.appendChild(li);
+    });
   });
-  clearBtn.addEventListener("click", () => {
-    history = [];
-    historyList.remove();
-  });
+}
 
-  btnContainer.appendChild(clearBtn);
-  btnContainer.appendChild(btn);
-  historyList.appendChild(btnContainer);
-  historyList.appendChild(document.createElement("hr"));
-  calc.appendChild(historyList);
+function addButtonsEventListeners() {
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const btnText = btn.innerText;
 
-  history.forEach((value) => {
-    const li = document.createElement("li");
-    li.innerText = value;
-    historyList.appendChild(li);
-  });
-});
+      const isValidNo =
+        btnText !== "AC" && btnText !== "=" && btnText !== "Del" && !isError;
+      const isClearBtn = btnText === "AC";
+      const isEqBtn = btnText === "=";
+      const isDelBtn = btnText === "Del";
 
-buttons.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const btnText = btn.innerText;
-
-    const isValidNo =
-      btnText !== "AC" && btnText !== "=" && btnText !== "Del" && !isError;
-    const isClearBtn = btnText === "AC";
-    const isEqBtn = btnText === "=";
-    const isDelBtn = btnText === "Del";
-
-    if (isValidNo) {
-      if (isOp(btnText)) {
-        if (canAddOperation) {
+      if (isValidNo) {
+        if (isOp(btnText)) {
+          if (canAddOperation) {
+            result.value += btnText;
+            canAddOperation = false;
+          }
+        } else {
           result.value += btnText;
-          canAddOperation = false;
+          canAddOperation = true;
         }
-      } else {
-        result.value += btnText;
-        canAddOperation = true;
+      } else if (isClearBtn) {
+        clearResult();
+      } else if (isDelBtn && !isError) {
+        if (result.value !== "" && result.value !== "0") {
+          result.value = removeLastChar(result.value);
+        }
+      } else if (isEqBtn) {
+        displayResult();
       }
-    } else if (isClearBtn) {
-      clearResult();
-    } else if (isDelBtn && !isError) {
-      if (result.value !== "" && result.value !== "0") {
-        result.value = removeLastChar(result.value);
-      }
-    } else if (isEqBtn) {
-      displayResult();
-    }
+    });
   });
-});
+}
 
 function clearResult() {
   result.value = "";
