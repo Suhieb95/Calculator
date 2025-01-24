@@ -1,29 +1,48 @@
-const buttons = document.querySelectorAll("button");
+const buttons = document.querySelectorAll(".calculator-body button");
 const result = document.getElementById("result");
+const historyBtn = document.querySelector(".history");
+const calc = document.querySelector(".calculator");
 
 let isError = false;
 let canAddOperation = true;
 let lastResult = 0;
 let lastOpertation = "";
+let history = [];
 
-document.addEventListener("DOMContentLoaded", () => {
-  let viewportMeta = document.querySelector("meta[name=viewport]");
+historyBtn.addEventListener("click", () => {
+  const historyList = document.createElement("div");
+  historyList.classList.add("history-list");
+  const btn = document.createElement("button");
+  const clearBtn = document.createElement("button");
+  const btnContainer = document.createElement("div");
 
-  if (!viewportMeta) {
-    viewportMeta = document.createElement("meta");
-    viewportMeta.name = "viewport";
-    document.head.appendChild(viewportMeta);
-  }
+  clearBtn.innerText = "🗑️";
+  btn.innerText = "✖";
 
-  viewportMeta.content =
-    "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no";
+  btn.addEventListener("click", () => {
+    historyList.remove();
+  });
+  clearBtn.addEventListener("click", () => {
+    history = [];
+    historyList.remove();
+  });
+
+  btnContainer.appendChild(clearBtn);
+  btnContainer.appendChild(btn);
+  historyList.appendChild(btnContainer);
+  historyList.appendChild(document.createElement("hr"));
+  calc.appendChild(historyList);
+
+  history.forEach((value) => {
+    const li = document.createElement("li");
+    li.innerText = value;
+    historyList.appendChild(li);
+  });
 });
 
 buttons.forEach((btn) => {
   btn.addEventListener("click", () => {
     const btnText = btn.innerText;
-    let isValidResultValue =
-      result.value !== "" && result.value !== "0" && isOp(result.value);
 
     const isValidNo =
       btnText !== "AC" && btnText !== "=" && btnText !== "Del" && !isError;
@@ -48,7 +67,7 @@ buttons.forEach((btn) => {
         result.value = removeLastChar(result.value);
       }
     } else if (isEqBtn) {
-      displayResult(isValidResultValue);
+      displayResult();
     }
   });
 });
@@ -56,6 +75,7 @@ buttons.forEach((btn) => {
 function clearResult() {
   result.value = "";
   canAddOperation = true;
+  lastOpertation = "";
   isError = false;
 }
 
@@ -78,20 +98,36 @@ function removeLastChar(word) {
   }
 }
 
-function displayResult(isValidResultValue) {
+function displayResult() {
   try {
-    if (isValidResultValue) {
-      getLastOperation(result.value);
-      const evalValue = eval(removeFormatting(result.value));
-      displayCalculation(evalValue);
-    } else if (!isNaN(removeFormatting(result.value))) {
-      const evalValue = eval(removeFormatting(result.value + lastOpertation));
+    const cleanValue = removeFormatting(result.value);
+    if (isValidMathematicalExpression(cleanValue)) {
+      let evalValue = "";
+      if (isEmptylastOpertation()) {
+        evalValue = eval(cleanValue);
+        history.push(`${cleanValue}=${evalValue}`);
+      } else {
+        evalValue = eval(removeFormatting(result.value + lastOpertation));
+        history.push(`${cleanValue} ${lastOpertation} = ${evalValue}`);
+      }
+      if (isOp(cleanValue)) {
+        setLastOperation(cleanValue);
+      }
       displayCalculation(evalValue);
     }
   } catch (error) {
     setError();
   }
 }
+
+const isEmptylastOpertation = () => lastOpertation == "";
+
+function isValidMathematicalExpression(value) {
+  // Regex to match valid mathematical expressions (numbers and operators)
+  const validExpressionRegex = /^[0-9+\-*/().]+$/;
+  return validExpressionRegex.test(value) && !/[\+\-\*\/]$/.test(value);
+}
+
 function displayCalculation(evalValue) {
   if (!isNaN(evalValue)) {
     result.value = formatNumber(evalValue);
@@ -101,16 +137,19 @@ function displayCalculation(evalValue) {
     setError();
   }
 }
-function getLastOperation(value) {
-  lastOpertation = "";
+function setLastOperation(value) {
+  if (isOp(value[0])) {
+    return;
+  }
   for (let i = value.length - 1; i >= 0; i--) {
     if (isOp(value[i])) {
-      lastOpertation = value[i] + lastOpertation;
+      lastOpertation = value.substring(i);
       break;
     }
-    lastOpertation = value[i] + lastOpertation;
   }
+  return lastOpertation;
 }
+
 function removeFormatting(value) {
   let result = "";
   let i = 0;
@@ -134,9 +173,10 @@ function setError() {
 }
 
 function formatNumber(no) {
-  if (no != 0) {
+  if (!isNaN(no)) {
     let formattedNumber = "";
-    const str = no.toString().split(".");
+    let isNegative = no < 0;
+    const str = Math.abs(no).toString().split(".");
     const strNo = str[0];
     let count = 0;
 
@@ -150,7 +190,9 @@ function formatNumber(no) {
     if (str[1] !== undefined) {
       return formattedNumber + "." + str[1];
     }
-
+    if (isNegative) {
+      formattedNumber = "-" + formattedNumber;
+    }
     return formattedNumber;
   }
 }
