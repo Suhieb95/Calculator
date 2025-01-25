@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   trashSvg = new Image();
   trashSvg.src = "./trash-solid.svg";
   trashSvg.title = "Clear";
+  trashSvg.loading = "lazy";
 });
 
 addButtonsEventListeners();
