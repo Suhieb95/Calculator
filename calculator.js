@@ -13,6 +13,7 @@ let trashSvg;
 document.addEventListener("DOMContentLoaded", () => {
   trashSvg = new Image();
   trashSvg.src = "./trash-solid.svg";
+  trashSvg.title = "Clear";
 });
 
 addButtonsEventListeners();
@@ -49,10 +50,7 @@ function addHistory() {
 function renderClearButton(btnContainer, historyList) {
   if (history.length > 0) {
     const clearBtn = document.createElement("button");
-    const img = document.createElement("img");
-    img.src = trashSvg;
-    img.title = "Clear";
-    clearBtn.appendChild(img);
+    clearBtn.appendChild(trashSvg);
     clearBtn.classList.add("clear-btn");
     btnContainer.appendChild(clearBtn);
     clearBtn.addEventListener("click", () => {
