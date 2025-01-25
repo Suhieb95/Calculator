@@ -10,15 +10,18 @@ let lastOpertation = "";
 let history = [];
 let trashSvg;
 
-document.addEventListener("DOMContentLoaded", () => {
-  trashSvg = new Image();
-  trashSvg.src = "./trash-solid.svg";
-  trashSvg.title = "Clear";
-  trashSvg.loading = "eager";
-});
-
 addButtonsEventListeners();
 addHistory();
+loadTrashImage();
+
+function loadTrashImage() {
+  document.addEventListener("DOMContentLoaded", () => {
+    trashSvg = new Image();
+    trashSvg.src = "./trash-solid.svg";
+    trashSvg.title = "Clear";
+    trashSvg.loading = "eager";
+  });
+}
 
 function addHistory() {
   historyBtn.addEventListener("click", () => {
