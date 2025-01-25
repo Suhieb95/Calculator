@@ -8,6 +8,12 @@ let canAddOperation = true;
 let lastResult = 0;
 let lastOpertation = "";
 let history = [];
+let trashSvg;
+
+document.addEventListener("DOMContentLoaded", () => {
+  trashSvg = new Image();
+  trashSvg.src = "./trash-solid.svg";
+});
 
 addButtonsEventListeners();
 addHistory();
@@ -44,8 +50,8 @@ function renderClearButton(btnContainer, historyList) {
   if (history.length > 0) {
     const clearBtn = document.createElement("button");
     const img = document.createElement("img");
-    img.src = "./trash-solid.svg";
-    img.title ="Clear";
+    img.src = trashSvg;
+    img.title = "Clear";
     clearBtn.appendChild(img);
     clearBtn.classList.add("clear-btn");
     btnContainer.appendChild(clearBtn);
