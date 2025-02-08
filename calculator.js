@@ -43,11 +43,13 @@ function addHistory() {
     historyList.appendChild(document.createElement("hr"));
     calc.appendChild(historyList);
 
-    history.forEach((value) => {
-      const li = document.createElement("li");
-      li.innerText = value;
-      historyList.appendChild(li);
-    });
+    history
+      .sort((a, b) => b.createdAt - a.createdAt)
+      .forEach(({ value }) => {
+        const li = document.createElement("li");
+        li.innerText = value;
+        historyList.appendChild(li);
+      });
   });
 }
 
@@ -129,16 +131,17 @@ function displayResult() {
     const cleanValue = removeFormatting(result.value);
     if (isValidMathematicalExpression(cleanValue)) {
       let evalValue = "";
-      if (isEmptylastOpertation()) {
-        evalValue = eval(cleanValue);
-        history.push(`${cleanValue}=${evalValue}`);
-      } else {
-        evalValue = eval(removeFormatting(result.value + lastOpertation));
-        history.push(`${cleanValue} ${lastOpertation} = ${evalValue}`);
-      }
+
+      evalValue = eval(removeFormatting(result.value + lastOpertation));
+      history.push({
+        value: `${cleanValue} ${lastOpertation} = ${evalValue}`,
+        createdAt: new Date(),
+      });
+
       if (isOp(cleanValue)) {
         setLastOperation(cleanValue);
       }
+
       displayCalculation(evalValue);
     }
   } catch (error) {
@@ -179,7 +182,7 @@ function setLastOperation(value) {
 function removeFormatting(value) {
   let result = "";
   let i = 0;
-  while (i < value.length) {
+  for (; i < value.length; i++) {
     const char = value[i];
     if (char === "×") {
       result += "*";
@@ -188,7 +191,6 @@ function removeFormatting(value) {
     } else if (char !== ",") {
       result += char;
     }
-    i++;
   }
   return result;
 }
